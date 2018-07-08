@@ -4,7 +4,7 @@ class App extends Component {
   render() {
     return (
       <div>
-        ㅎㅇ
+        페이지만들기
       </div>
     );
   }
