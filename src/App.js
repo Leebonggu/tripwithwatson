@@ -3,6 +3,7 @@ import { injectGlobal } from 'styled-components';
 
 import { auth, database } from './firebase'
 import Auth from './components/auth';
+import Main from './components/main';
 
 injectGlobal`
   html, body {
@@ -39,7 +40,10 @@ class App extends Component {
   render() {
     const { userData } = this.state;
     return (
-      <Auth userData={userData} />
+      <div>
+        <Main />
+        <Auth userData={userData} />
+      </div>
     );
   }
 }
