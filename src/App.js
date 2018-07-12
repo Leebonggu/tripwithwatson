@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { injectGlobal } from 'styled-components';
+import { BrowserRouter, Route } from 'react-router-dom';
 
 import { auth, database } from './firebase'
 import Auth from './components/auth';
 import Main from './components/main';
+import Travel from './components/travel';
 
 injectGlobal`
   html, body {
@@ -40,10 +42,14 @@ class App extends Component {
   render() {
     const { userData } = this.state;
     return (
-      <div>
-        <Main />
-        <Auth userData={userData} />
-      </div>
+      <BrowserRouter>
+        <div>
+          <Route exact path="/" component={ () => <Main auth={<Auth userData={userData} />}/> } />
+          <Route exact path="/travel" component={Travel} />
+        </div>
+        {/* <Auth userData={userData} /> */}
+        {/* <Main auth={<Auth userData={userData} />}/> */}
+      </BrowserRouter>
     );
   }
 }
