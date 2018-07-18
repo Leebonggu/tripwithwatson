@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { injectGlobal } from 'styled-components';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { auth, database } from './firebase'
 import Auth from './components/auth';
 import Main from './components/main';
 import Travel from './components/travel';
+import TourInfomation from './components/travel/tourInformation';
 
 injectGlobal`
   html, body {
@@ -17,6 +18,7 @@ injectGlobal`
 class App extends Component {
   state = {
     userData: null,
+    uid: null,
   };
 
   handleUserData = userData => this.setState({ userData });
@@ -33,6 +35,7 @@ class App extends Component {
   componentDidMount() {
     auth.onAuthStateChanged((user) => {
       if (user) {
+        this.setState({ uid: user.uid });
         return this.getDataFromDatabase(user.uid);
       }
       this.handleUserData(null);
@@ -41,11 +44,15 @@ class App extends Component {
 
   render() {
     const { userData } = this.state;
+    const { uid } = this.state;
     return (
       <BrowserRouter>
         <div>
-          <Route exact path="/" component={ () => <Main auth={<Auth userData={userData} />}/> } />
-          <Route exact path="/travel" component={Travel} />
+          <Switch>
+            <Route exact path="/" component={ () => <Main auth={<Auth userData={userData} />}/> } />
+            <Route exact path="/travel" component={() => <Travel userData={userData} />} />
+            <Route exact path="/tourinformation/:routeUid" component={() => <TourInfomation userData={userData} uid={uid} />} />
+          </Switch>
         </div>
         {/* <Auth userData={userData} /> */}
         {/* <Main auth={<Auth userData={userData} />}/> */}

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Alert } from 'antd';
 
 import { firebase, googleAuth, auth } from '../../firebase'; 
 import SignIn from './signIn';
@@ -28,8 +29,8 @@ class Auth extends Component {
 
   render() {
     const { userData } = this.props;
-    console.log((auth.currentUser && !userData))
-    console.log(userData);
+    // console.log((auth.currentUser && !userData))
+    // console.log(userData);
     return (
       <div>
         {auth.currentUser ? (
