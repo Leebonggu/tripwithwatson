@@ -100,7 +100,7 @@ class Main extends Component {
             <Button type="primary" icon="compass" size="large">Let's Travel!!!</Button>
           </Link>
         </Reservation>
-        <EtcContents>
+        {/* <EtcContents>
           <Alarm>
             <Event />
           </Alarm>
@@ -109,7 +109,7 @@ class Main extends Component {
         <FooterContainer>
           <Foot>개인정보동의약관</Foot>
           <Foot>여러가지내용들</Foot>
-        </FooterContainer>
+        </FooterContainer> */}
       </Wrapper>
     );
   }

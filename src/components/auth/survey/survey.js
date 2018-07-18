@@ -103,16 +103,16 @@ class Survey extends Component {
             {...formItemLayout}
             label="Travel Tendency(Multiple Choice)"
           >
-            {getFieldDecorator('travel-tendency', {
+            {getFieldDecorator('tendency', {
               rules: [{required: true, message: '여행 성향을 선택해주세요', type: 'array'}],
             })(
               <Select mode="multiple" placeholder="여행 성향을 선택해주세요!">
-                <Option value='recreation'>휴양</Option>
-                <Option value='activity'>액티비티</Option>
-                <Option value='nightview'>야경</Option>
-                <Option value='shopping'>쇼핑</Option>
-                <Option value='foodie'>맛집</Option>
-                <Option value='touristDestination'>관광지(박물관,공원,대자연)</Option>
+                <Option value='휴양지'>휴양지</Option>
+                <Option value='액티비티'>액티비티</Option>
+                <Option value='야경'>야경</Option>
+                <Option value='쇼핑'>쇼핑</Option>
+                <Option value='맛집투어'>맛집투어</Option>
+                <Option value='관광지'>관광지(박물관,공원,대자연)</Option>
               </Select>
             )}
           </StyeldFormItem>
