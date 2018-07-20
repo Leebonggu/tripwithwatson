@@ -6,8 +6,6 @@ class CheckTendency extends Component {
   constructor(props) {
     super(props);
   };
-
-
   // handleTendency = (event) => {
   //   const selectedTendency = event.target.value;
   //   const { tendencies } = this.state;
@@ -24,8 +22,6 @@ class CheckTendency extends Component {
   //     this.setState({ tendencies: updatedTendencies, tf: !this.state.tf })
   //   }
   // };
-  
-
   render() {
     const {tendencies} = this.props;
     return (

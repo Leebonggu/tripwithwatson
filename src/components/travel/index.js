@@ -6,7 +6,7 @@ import _ from 'lodash';
 
 import { database, auth } from '../../firebase';
 import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
-import { googleMapInitialize } from '../../lib/loadGoogleMap';
+import { googleMapInitialize, googleStaticMap } from '../../lib/loadGoogleMap';
 import Map from './map';
 import WrappedButton from './infoButton';
 import RouteDeleteButton from './routeDeleteButton';
@@ -14,13 +14,14 @@ import CheckTendency from './checkTendencies';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const StyeldSider = styled(Sider)`
-  background-color: ${sub4};
-`;
-
 const StyeldLayout =  styled(Layout)`
   width: 100%;
   height: 90%;
+  display: flex;
+`;
+
+const StyeldSider = styled(Sider)`
+  background-color: ${sub4};
 `;
 
 const StyledContent = styled(Content)`
@@ -29,11 +30,15 @@ const StyledContent = styled(Content)`
 `;
 
 const MapContents = styled.div`
+  width: 100%;
   display: flex;
+  margin: 0 auto;
+  position: relative;
   flex-direction: column;
 `;
 
 const Maps = styled.div`
+  width: 90%;
   flex: 95;
   display: flex;
 `;
@@ -67,11 +72,8 @@ const RouteButton = styled.div`
 
 
 const LoadingIcon = styled(Icon)`
-  display: flex;
-  width: 10rem;
-  height: 10rem;
-  justify-content: center;
-  align-items: center;
+  margin-right: .5rem;
+  font-size: 1rem;
 `;
 
 class Travel extends Component {
@@ -202,20 +204,22 @@ class Travel extends Component {
     const { isLoading, travelData, tendencies, selectedPlace, selectedData} = this.state;
     const { userData } = this.props;
     const personInfo  = userData ? userData.personInfo : null;
-    // console.log('sp',selectedPlace.length);
-    // console.log('sd',selectedData);
     return (
       <div>
         {isLoading && travelData && tendencies? (
           <StyeldLayout>
-            <StyeldSider style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 }}>
+            <StyeldSider 
+              style={{ overflow: 'auto', height: '100vh', position: 'realtive', left: 0  }}
+              // breakpoint="lg"
+              // collapsedWidth="0"
+            >
               <div className="logo" />
               {this.handleSelectedPlaceList(selectedPlace)}
             </StyeldSider>
-            <StyeldLayout style={{ marginLeft: 200 }}>
+            <StyeldLayout style={{ marginLeft: 0 }}>
               <Header style={{ background: '#fff', padding: 0 }}><Link to="/">마이리얼트립</Link></Header>
-              <StyledContent style={{ margin: '24px 16px 0', overflow: 'initial' }}>
-              <MapContents>
+              <StyledContent style={{ margin: '24px 16px 0' }}>
+              <MapContents  style={{ padding: 24, background: '#fff', minWidth: 360, display: 'flex',}}>
                 <SelectButtons>
                   <CheckTendency 
                     tendencies={tendencies}
@@ -233,10 +237,10 @@ class Travel extends Component {
                 </Maps>
               </MapContents>
               </StyledContent>
-              <Footer style={{ textAlign: 'center' }} />
+              <Footer style={{ textAlign: 'center' }}> MRT ©2018 Created </Footer>
             </StyeldLayout>
           </StyeldLayout>
-        ) : <LoadingIcon type="loading" />}
+        ) : <span><LoadingIcon type="loading"/>loading...</span>}
       </div>
     );
   }

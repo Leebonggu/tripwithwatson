@@ -6,11 +6,10 @@ import { auth, database } from './firebase'
 import Auth from './components/auth';
 import Main from './components/main';
 import Travel from './components/travel';
-import TourInfomation from './components/travel/tourInformation';
+import TourInfomation from './components/tourInfo/tourInformation';
 
 injectGlobal`
   html, body {
-    height: 100%;
     margin: 0;
   }
 `;

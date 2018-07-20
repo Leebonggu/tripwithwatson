@@ -1,36 +1,44 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import { Button } from 'antd';
+import { Button, Icon } from 'antd';
 
 import { database, auth, firebase } from '../../firebase';
 import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
 import { citiesMarker } from '../../statics/markers/markers'; 
 
 const Wrapper = styled.div`
+  width: 100%;
   display: flex;
   flex-direction: row;
 `;
 const MapContainer = styled.div`
   flex: 8;
+  width: 100%;
+  height: 40rem;
+  margin: 0 auto;
+  position: relative;
   display: flex;
   justify-content: center;
-  width: 80rem;
-  height: 50rem;
 `;
 
+const MapContents = styled.div`
+  width: 100%;
+  display: flex;
+  /* flex: 7; */
+  `;
+
 const ResultWrapper = styled.div`
-  flex: 2;
+  flex: 3;
+  width: 100%;
+  margin-left: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const Test = styled.div`
-  display: flex;
-`;
-
-
 const Select = styled.div`
+  margin-left: 2rem;
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -39,6 +47,7 @@ const Select = styled.div`
 const StyledButton = styled(Button)`
   flex: 1;
   margin-left: 1rem;
+  display: flex;
   background-color: ${main};
   color: ${sub1};
   border: none;
@@ -52,6 +61,7 @@ const StyledButton = styled(Button)`
 
 const ResultTitle = styled.h2`
   flex: 9;
+  display: flex;
   text-align: center;
   color: ${sub4};
 `;
@@ -60,11 +70,50 @@ const SelectedList = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 85%;
+  width: 100%;
   height: 3rem;
   margin-top: 0.1rem;
   border: 1px solid ${sub4};
   color: ${sub4};
+`;
+
+const SelectedListTitle = styled.div`
+  flex: 9;
+  display: flex;
+  justify-content: center;  
+`;
+
+const SelectedButtons = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+`;
+
+const SelectedPlaceUpButton = styled(Icon)`
+  color: ${sub4};
+
+  &:hover {
+    background-color: ${sub4};
+    color: ${sub1};
+  }
+`;
+
+const SelectedPlaceDownButton = styled(Icon)`
+  color: ${sub4};
+
+  &:hover {
+    background-color: ${sub4};
+    color: ${sub1};
+  }
+`;
+
+const SelectedPlaceDeleteButton = styled(Icon)`
+  color: ${sub3};
+
+  &:hover {
+    background-color: ${sub3};
+    color: ${sub1};
+  }
 `;
 
 class Map extends Component {
@@ -81,64 +130,6 @@ class Map extends Component {
 
   markers = [];
 
-  attachMessage = (marker, message) => {
-    const infoWindow = new window.google.maps.InfoWindow({
-      content: `
-        <div>
-          <span>${message}</span>
-          <button onclick="mapComp.getSelectedPlace('${marker.title}')">추가</button>
-        </div>
-      `,
-    });
-
-    let isOpened = false;
-    marker.addListener('click', () => {
-      window.mapComp = this;
-      infoWindow[isOpened ? 'close' : 'open'](marker.get('map'), marker);
-      isOpened = !isOpened;
-      if (!isOpened) {
-        window.mapComp = null;
-      }
-    });
-  };
-
-  getSelectedPlace = (title) => {
-    // const clickedPlace = {...element};    
-    const current = this.state.selectedPlace;
-    // clickedPlace['title'] = marker.title;
-    // clickedPlace['placeInfo'] = { lat: marker.position.lat(), lng: marker.position.lng() }
-    const selectedPlaceInfo = this.props.travelData.filter(element => {
-      // console.log(element)
-      return element["도시여행정보"].includes(title.split(' ')[2])
-    });
-    // console.log(a);
-    // console.log(title.split(' ')[2])
-    // console.log(this.state.selectedPlace, element)
-    console.log(title, selectedPlaceInfo[0]);
-    // const [result] = [...selectedPlaceInfo];
-    // const current = { ...selectedPlaceInfo[0]}
-    // const current2 = { ...selectedPlaceInfo}
-
-    // console.log('re',result)
-    
-    // console.log(11,selectedPlaceInfo)
-    console.log(11111,selectedPlaceInfo[0])
-    if (selectedPlaceInfo) {
-      this.setState({ selectedPlace: [...current, {...selectedPlaceInfo[0], title}] })
-    }
-  };
-
-  saveSelctedPlace = (event) => {
-    const name = prompt('입려스!')
-    const { selectedPlace } = this.state;
-    const uid = auth.currentUser.uid;
-    console.log(1,selectedPlace);
-    if (selectedPlace.length === 0 || name === '') { 
-      return
-    }
-    database.ref(`users/${uid}/myPlaces`).push({ ...selectedPlace, name: name, createdAt: firebase.database.ServerValue.TIMESTAMP });
-    this.setState({ selectedPlace: [] })
-  }
 
   componentDidMount() {
     // var position;
@@ -180,34 +171,124 @@ class Map extends Component {
     }
   }
 
-  render() {
-console.log(main)
+  attachMessage = (marker, message) => {
+    const infoWindow = new window.google.maps.InfoWindow({
+      content: `
+        <div>
+          <span>${message}</span>
+          <button onclick="mapComp.getSelectedPlace('${marker.title}')">추가</button>
+        </div>
+      `,
+    });
 
+    let isOpened = false;
+    marker.addListener('click', () => {
+      window.mapComp = this;
+      infoWindow[isOpened ? 'close' : 'open'](marker.get('map'), marker);
+      isOpened = !isOpened;
+      if (!isOpened) {
+        window.mapComp = null;
+      }
+    });
+  };
+
+  getSelectedPlace = (title) => {
+    // 추가버튼 눌리면 Selected Route에 추가되는 기능
+    const current = this.state.selectedPlace;
+    const result = [];
+    const selectedPlaceInfo = this.props.travelData.filter(element => {
+      return element["도시여행정보"].includes(title.split(' ')[2]);
+    });
+    
+    current.forEach(element => {
+      if (element["도시여행정보"] === selectedPlaceInfo[0]['도시여행정보']) {
+        result.push(element);
+      }
+    });
+    if (result.length === 0) {
+      this.setState({ selectedPlace: [...current, {...selectedPlaceInfo[0], title}] })
+    }
+  };
+
+  selectedPlaceMoveUp = (index) => {
+    let temp;
+    const current = this.state.selectedPlace;
+    
+    if (index === 0) {
+      console.log('맨 위의 데이터는 더 이상 올라갈 곳이 없지요~');
+      return;
+    }
+    temp = current[index - 1];
+    current[index - 1] = current[index];
+    current[index] = temp;
+
+    this.setState({ selectedPlace: current });
+  };
+
+  selectedPlaceMoveDown = (index) => {
+    let temp;
+    const current = this.state.selectedPlace;
+    
+    if (index === current.length - 1) {
+      console.log('맨 아래 데이터는 더 이상 내려갈 곳이 없지요~');
+      return;
+    }
+    temp = current[index + 1];
+    current[index + 1] = current[index];
+    current[index] = temp;
+    
+    this.setState({ selectedPlace: current });
+  };
+
+  selectedPlaceDelete = (index) => {
+    console.log('삭제를 하자', index);
+    const current = this.state.selectedPlace;
+    current.splice(index, 1);
+    this.setState({ selectedPlace: current });
+  };
+
+  saveSelctedPlace = (event) => {
+    const name = prompt('입려스!')
+    const { selectedPlace } = this.state;
+    const uid = auth.currentUser.uid;
+    console.log(1,selectedPlace);
+    if (selectedPlace.length === 0 || name === '') { 
+      return
+    }
+    database.ref(`users/${uid}/myPlaces`).push({ ...selectedPlace, name: name, createdAt: firebase.database.ServerValue.TIMESTAMP });
+    this.setState({ selectedPlace: [] })
+  };
+
+  render() {
     const { selectedPlace } = this.state;
     console.log('re',selectedPlace)
     return (
       <Wrapper>
         {selectedPlace ? (
-          <Test>
-            <MapContainer innerRef={this.mapRef} />
+          <MapContents>
+            <MapContainer className="map" innerRef={this.mapRef} />
             <ResultWrapper>
               <Select>
                 <ResultTitle>Selected Route</ResultTitle>
                 <StyledButton onClick={this.saveSelctedPlace}>Save</StyledButton>
               </Select>
               {selectedPlace.map((place, index)=> {
-                return <SelectedList key={index}>{index + 1}: {place.title} </SelectedList>
+                return (
+                <SelectedList key={index}>
+                  <SelectedListTitle>{index + 1}: {place.title}</SelectedListTitle>
+                  <SelectedButtons>
+                    <SelectedPlaceUpButton value="1" onClick={() => this.selectedPlaceMoveUp(index)}><Icon type="caret-up" /></SelectedPlaceUpButton>
+                    <SelectedPlaceDeleteButton onClick={() => this.selectedPlaceDelete(index)}><Icon type="close" /></SelectedPlaceDeleteButton>
+                    <SelectedPlaceDownButton value="2" onClick={() => this.selectedPlaceMoveDown(index)}><Icon type="caret-down" /></SelectedPlaceDownButton>
+                  </SelectedButtons>
+                </SelectedList>
+                )
               })}
             </ResultWrapper>
-            {/* <div>Selected Route</div>
-            <button onClick={this.saveSelctedPlace}>저장!</button>
-            {selectedPlace.map((place, index)=> {
-              return <div key={index}>{index + 1}: {place.title} </div>
-            })} */}
-          </Test>
+          </MapContents>
         ) : (
           <div>
-            <MapContainer innerRef={this.mapRef} />
+            <MapContainer className="map" innerRef={this.mapRef} />
           </div>
         )}
       </Wrapper>

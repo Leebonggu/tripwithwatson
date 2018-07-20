@@ -7,7 +7,6 @@ import SignOut from './signOut';
 import Survey from './survey/survey';
 
 class Auth extends Component {
-
   signIn = async () => {
     try {
       await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION);
