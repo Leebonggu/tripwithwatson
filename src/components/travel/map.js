@@ -12,7 +12,7 @@ const Wrapper = styled.div`
   flex-direction: row;
 `;
 const MapContainer = styled.div`
-  flex: 8;
+  flex: 7;
   width: 100%;
   height: 40rem;
   margin: 0 auto;
@@ -25,31 +25,35 @@ const MapContents = styled.div`
   width: 100%;
   display: flex;
   /* flex: 7; */
-  `;
+`;
 
 const ResultWrapper = styled.div`
   flex: 3;
   width: 100%;
-  margin-left: 2rem;
+  margin: 0 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 const Select = styled.div`
-  margin-left: 2rem;
+  margin-left: 1rem;
   position: relative;
   display: flex;
   flex-direction: row;
   justify-content: center;
+  animation-duration: 0s !important;
 `;
 
 const StyledButton = styled(Button)`
   flex: 1;
-  margin-left: 1rem;
+  width: 5rem;
+  height: 2rem;
+  border-radius: 10rem;
   display: flex;
   background-color: ${main};
   color: ${sub1};
+  font-weight: bold;
   border: none;
 
   &:hover {
@@ -57,6 +61,13 @@ const StyledButton = styled(Button)`
     color: ${main};
     border: 1px solid ${main};
   };
+
+  &:active {
+    outline: none;
+    background-color: ${sub1};
+    color: ${main};
+    border: 1px solid ${main};
+  }
 `;
 
 const ResultTitle = styled.h2`

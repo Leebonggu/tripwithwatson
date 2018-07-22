@@ -46,8 +46,9 @@ const StyledLink = styled(Link)`
   position: absolute;
   display: flex;
   margin-left: 0.5rem;
-  font-size: 1.3rem;
-  color: ${sub4};
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: ${sub2};
   text-decoration: none;
 `;
 

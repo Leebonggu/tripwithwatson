@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Form, Input, Select, Button, Icon, Radio, Slider } from 'antd';
 
+import { main, sub1, sub2, sub3, sub4 } from  '../../../statics/colors';
 import { database, auth } from '../../../firebase'
 
 const Option = Select.Option;
@@ -22,6 +23,27 @@ const StyeldForm = styled(Form)`
 
 const StyeldFormItem = styled(FormItem)`
   padding: 1rem;
+`;
+
+const StyledButton = styled(Button)`
+  width: 5rem;
+  height: 2rem;
+  border: none;
+  border-radius: 10rem;
+  background-color: ${main};
+  font-weight: bold;
+  color: ${sub1};
+  &:hover {
+    border: 1px solid ${main};
+    background-color: ${sub1};
+    color: ${main};
+  }
+  &:active {
+    outline: none;
+    background-color: ${sub1};
+    color: ${main};
+    border: 1px solid ${main};
+  }
 `;
 
 class Survey extends Component {
@@ -127,7 +149,7 @@ class Survey extends Component {
           <StyeldFormItem
             wrapperCol={{ span: 12, offset: 10 }}
             >
-            <Button type="primary" htmlType="submit" size="large">등록</Button>
+            <StyledButton type="primary" htmlType="submit" size="large">등록</StyledButton>
           </StyeldFormItem>
         </StyeldForm>
       </div>
