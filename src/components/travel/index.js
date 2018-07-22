@@ -29,16 +29,41 @@ const StyledContent = styled(Content)`
   display: flex;
 `;
 
+const StyledHeader = styled(Header)`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  background-color: #f0f2f5;
+  font-weight: 900;
+  font-size: 2.5rem;
+  letter-spacing: -0.6rem;
+`;
+
+const HeaderLink = styled(Link)`
+  color: ${main};
+  text-decoration: none;
+
+  &:hover {
+    color: ${main};
+  }
+`;
+
 const MapContents = styled.div`
   width: 100%;
+  height: 100%;
   display: flex;
-  margin: 0 auto;
+  justify-content: center;
+  margin-top: 2rem;
+  margin: 2rem 3rem 0 3rem;
+  padding: 1rem;
   position: relative;
   flex-direction: column;
 `;
 
 const Maps = styled.div`
-  width: 90%;
+  width: 100%;
+  height: 100%;
   flex: 95;
   display: flex;
 `;
@@ -50,6 +75,7 @@ const Span = styled.span`
 const SelectButtons = styled.div`
   flex: 5;
   display: flex;
+  margin-bottom: 1rem;
 `;
 
 const StyledButton = styled(Button)`
@@ -58,6 +84,10 @@ const StyledButton = styled(Button)`
 const MenuItem = styled.div`
   display: flex;
   flex-direction: row;
+
+  &:active {
+    background-color: ${sub1};
+  }
 `;
 
 const RouteName = styled.div`
@@ -75,6 +105,13 @@ const LoadingIcon = styled(Icon)`
   margin-right: .5rem;
   font-size: 1rem;
 `;
+
+const StyledFooter = styled(Footer)`
+  height:100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`
 
 class Travel extends Component {
   state = {
@@ -170,7 +207,7 @@ class Travel extends Component {
   handleSelectedPlaceList = (selected) => {
     console.log('se',selected);
     return selected.length > 0 ? (
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+      <Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
         {
           selected.map(([eachRouteUid, eachPlaces], index) => {
             return (
@@ -213,13 +250,12 @@ class Travel extends Component {
               // breakpoint="lg"
               // collapsedWidth="0"
             >
-              <div className="logo" />
               {this.handleSelectedPlaceList(selectedPlace)}
             </StyeldSider>
             <StyeldLayout style={{ marginLeft: 0 }}>
-              <Header style={{ background: '#fff', padding: 0 }}><Link to="/">마이리얼트립</Link></Header>
+              <StyledHeader style={{ background: 'f0f2f5'}}><HeaderLink to="/">ㅁㅇㄹㅇㅌㄹ</HeaderLink></StyledHeader>
               <StyledContent style={{ margin: '24px 16px 0' }}>
-              <MapContents  style={{ padding: 24, background: '#fff', minWidth: 360, display: 'flex',}}>
+              <MapContents  style={{  background: '#fff', minWidth: 360, display: 'flex',}}>
                 <SelectButtons>
                   <CheckTendency 
                     tendencies={tendencies}
@@ -237,7 +273,7 @@ class Travel extends Component {
                 </Maps>
               </MapContents>
               </StyledContent>
-              <Footer style={{ textAlign: 'center' }}> MRT ©2018 Created </Footer>
+              <StyledFooter> MRT ©2018 Created </StyledFooter>
             </StyeldLayout>
           </StyeldLayout>
         ) : <span><LoadingIcon type="loading"/>loading...</span>}

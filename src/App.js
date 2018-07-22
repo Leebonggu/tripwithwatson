@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import { injectGlobal } from 'styled-components';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { HashRouter, Route, Switch } from 'react-router-dom';
 
 import { auth, database } from './firebase'
 import Auth from './components/auth';
+import Survey from './components/auth/survey/survey';
 import Main from './components/main';
 import Travel from './components/travel';
 import TourInfomation from './components/tourInfo/tourInformation';
 
 injectGlobal`
   html, body {
-    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: 'Nanum Gothic', sans-serif;
   }
 `;
 
@@ -45,17 +48,18 @@ class App extends Component {
     const { userData } = this.state;
     const { uid } = this.state;
     return (
-      <BrowserRouter>
+      <HashRouter>
         <div>
           <Switch>
             <Route exact path="/" component={ () => <Main auth={<Auth userData={userData} />}/> } />
             <Route exact path="/travel" component={() => <Travel userData={userData} />} />
+            <Route exact path="/survey" component={() => <Survey />} />
             <Route exact path="/tourinformation/:routeUid" component={() => <TourInfomation userData={userData} uid={uid} />} />
           </Switch>
         </div>
         {/* <Auth userData={userData} /> */}
         {/* <Main auth={<Auth userData={userData} />}/> */}
-      </BrowserRouter>
+      </HashRouter>
     );
   }
 }

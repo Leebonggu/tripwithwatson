@@ -3,114 +3,193 @@ import styled from 'styled-components';
 import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 
-import logo from '../../statics/images/logo1.png';
-import Slide from './Carousel';
-import Event from './Event';
+import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
+import mainleft from '../../statics/images/main-left.jpg';
+import AnimatedTyping from './mainTyping';
+import background from '../../statics/images/background.mp4';
+
 // import Graph from './Graph';
 
 const Wrapper = styled.div`
-  width: 100%;
-  justify-content: center;
-`;
-
-const Header = styled.div`
-  display: flex;
-  margin-bottom: 2rem;
-  border-bottom: 1px solid grey;
-`;
-
-const StyledAuth = styled.div`
-  flex:1;
-  display: flex;
-  justify-content: flex-end;
-  margin: 1rem;
-`;
-
-const Logo = styled.div`
-  flex: 1;
-  justify-content: flex-start;
-  margin: 1rem;
-`;
-
-const Pictures = styled.div`
-  width: 100%;
-  height: 50%;
-`; 
-
-const Reservation = styled.div`
-  display: flex;
-  justify-content: center;
-`; 
-const EtcContents = styled.div`
-  width: 80%;
-  height: 30rem;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  margin: 1rem auto;
-`
-const Alarm = styled.div`
-  flex: 5;
-  height: 30rem;
-  width: 25rem;
-  margin: 1rem;
-  text-align: center;
-  overflow: hidden;
-  /* margin-left: 200px;
-  margin-bottom: 250px;
-  margin-top: 100px; */
-  border: 1px solid black;
-`;
-
-const Trend = styled.div`
-  flex: 5;
-  height: 30rem;
-  width: 25rem;
-  margin: 1rem;
-  border: 1px solid black;
-`;
-const FooterContainer = styled.div`
-  width: 100%;
+  min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  border-top: 1px solid grey;;
 `;
 
-const Foot = styled.div`
-  padding: 1rem;
+const Contents = styled.div`
+  flex: 1;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  background-color: white;
+`;
+
+const LeftContents = styled.div`
+  flex: 2.5;
+  display:table;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${mainleft});
+  background-position: center;
+  background-repeat: no-repeat;
+`;
+
+const LeftLogo = styled.div`
+  flex: 1;
+  height: 100%;
+  margin-left: 1rem;
+  display: flex;
+  font-weight: 900;
+  font-size: 2.3rem;
+  letter-spacing: -0.5rem;
+  color: ${main};
+  /* background-color: red; */
+`;
+
+const LeftText = styled.div`
+  flex: 8;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: ${sub1};
+`;
+
+const LeftSpon = styled.div`
+  flex: 2;
+  height: 100%;
+  color: ${sub1};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const SponDiscription = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 800;
+  color: ${sub2};
+  
+`;
+
+const SponList = styled.div`
+  flex: 9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const SponName = styled.div`
+  font-weight: 800;
+  letter-spacing: -1px;  
+  padding: 0.7rem;
+  margin: 0.5rem;
+  color: ${sub2};
+`
+
+const RightContents = styled.div`
+  flex: 7.5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  /* background-color: blue; */
+`;
+
+const RigthAuthContainer = styled.div`
+  flex: 5;
+  width: 100%;
+  display: flex;
+  margin-top: 0.3rem;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const AuthButton = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-right: 1.5rem;
+`;
+
+const StyledButton = styled(Button)`
+  width: 16rem;
+  height: 4rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 10rem;
+  background-color: ${main};
+  color: ${sub1};
+  border: none;
+
+  &:hover {
+    border: 1px solid ${main};
+    background-color: ${sub1};
+    color: ${main};
+  }
+`;
+
+const RigthMainContainer = styled.div`
+  flex: 95;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 class Main extends Component {
-  
   render() {
   const { auth } = this.props;
 
     return (
       <Wrapper>
-        <Header>
-          <Logo>마이리얼트립</Logo>
-          <StyledAuth>{auth}</StyledAuth>
-        </Header>
-        <Pictures>
-          <Slide />
-        </Pictures>
-        <Reservation>
-          <Link to="/travel">
-            <Button type="primary" icon="compass" size="large">Let's Travel!!!</Button>
-          </Link>
-        </Reservation>
-        {/* <EtcContents>
-          <Alarm>
-            <Event />
-          </Alarm>
-          <Trend>ㅎㅇ</Trend>
-        </EtcContents>
-        <FooterContainer>
-          <Foot>개인정보동의약관</Foot>
-          <Foot>여러가지내용들</Foot>
-        </FooterContainer> */}
+        <Contents>
+          <LeftContents>
+            <LeftLogo>ㅁㅇㄹㅇㅌㄹ</LeftLogo>
+            <LeftText><AnimatedTyping/></LeftText>
+            <LeftSpon>
+              <SponDiscription>with us</SponDiscription>
+              <SponList>
+                <SponName>CYS Insight</SponName>
+                <SponName>JEI 재능교육</SponName>
+              </SponList>
+            </LeftSpon>
+          </LeftContents>
+          <RightContents>
+            {/* main contents images */}
+            <RigthAuthContainer>
+              <AuthButton>{auth}</AuthButton>
+            </RigthAuthContainer>
+            <RigthMainContainer>
+              <Link to="/travel">
+                <StyledButton type="primary" icon="compass" size="large">Map Page</StyledButton>
+              </Link>
+            </RigthMainContainer>
+          </RightContents>
+        </Contents>
       </Wrapper>
+      // <Wrapper>
+      //   <LeftContents>ㅎㅇ</LeftContents>
+      //   <RightContents>
+      //     <Slide />
+
+      //     <Reservation>
+            // <Link to="/travel">
+            //   <Button type="primary" icon="compass" size="large">Let's Travel!!!</Button>
+            // </Link>
+      //     </Reservation>
+      //   </RightContents>
+      //   {/* <Header>
+      //     <Logo>마이리얼트립</Logo>
+      //     <StyledAuth>{auth}</StyledAuth>
+      //   </Header> */}
+      //   {/* <Pictures>
+      //   </Pictures> */}
+      // </Wrapper>
     );
   }
 }

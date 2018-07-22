@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert } from 'antd';
+import { Redirect } from 'react-router-dom';
 
 import { firebase, googleAuth, auth } from '../../firebase'; 
 import SignIn from './signIn';
@@ -39,6 +39,7 @@ class Auth extends Component {
         )}
         {(auth.currentUser && !userData) && (
           <Survey /> 
+          // <Redirect to="/survey"/>
         )}
       </div>
     )
