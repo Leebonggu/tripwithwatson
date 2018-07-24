@@ -8,64 +8,33 @@ import { database, auth } from '../../firebase';
 import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
 import { googleMapInitialize, googleStaticMap } from '../../lib/loadGoogleMap';
 import Map from './map';
+import WatsonChatButton from '../watson/WatsonChatButton';
 import WrappedButton from './infoButton';
 import RouteDeleteButton from './routeDeleteButton';
 import CheckTendency from './checkTendencies';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const StyeldLayout =  styled(Layout)`
-  width: 100%;
-  height: 90%;
-  display: flex;
-`;
-
 const StyeldSider = styled(Sider)`
   background-color: ${sub4};
+  height: auto;
 `;
 
-const StyledContent = styled(Content)`
-  height: 100%;
-  display: flex;
-`;
-
-const StyledHeader = styled(Header)`
-  width: 100%;
-  height: 100%;
+const StyleLogo = styled.div`
   display: flex;
   justify-content: center;
-  background-color: #f0f2f5;
+  margin:0 auto;
   font-weight: 900;
-  font-size: 2.5rem;
+  font-size: 2rem;
   letter-spacing: -0.6rem;
 `;
 
 const HeaderLink = styled(Link)`
   color: ${main};
   text-decoration: none;
-
   &:hover {
     color: ${main};
   }
-`;
-
-const MapContents = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 2rem;
-  margin: 2rem 3rem 0 3rem;
-  padding: 1rem;
-  position: relative;
-  flex-direction: column;
-`;
-
-const Maps = styled.div`
-  width: 100%;
-  height: 100%;
-  flex: 95;
-  display: flex;
 `;
 
 const Span = styled.span`
@@ -73,21 +42,22 @@ const Span = styled.span`
 `;
 
 const SelectButtons = styled.div`
-  flex: 5;
+  position: absolute;
+  top: 0.5rem;
+  left: 5.5rem;
   display: flex;
   margin-bottom: 1rem;
+  z-index: 5;
 `;
 
 const StyledButton = styled(Button)`
+  left: 0.5rem;
+  font-weight: 800;
 `;
 
 const MenuItem = styled.div`
   display: flex;
   flex-direction: row;
-
-  &:active {
-    background-color: ${sub1};
-  }
 `;
 
 const RouteName = styled.div`
@@ -105,13 +75,6 @@ const LoadingIcon = styled(Icon)`
   margin-right: .5rem;
   font-size: 1rem;
 `;
-
-const StyledFooter = styled(Footer)`
-  height:100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`
 
 class Travel extends Component {
   state = {
@@ -158,21 +121,11 @@ class Travel extends Component {
   };
   
   handleTendency = (event) => {
-    const selectedTendency = event.target.value;
     const { tendencies } = this.state;
-
-    if (tendencies.includes(selectedTendency)) {
-      tendencies.splice(tendencies.indexOf(selectedTendency),1);
-      const updatedTendencies = tendencies;
-      // console.log('update',updatedTendencies)
-      this.setState({ tendencies: updatedTendencies})
-    } else {
-      tendencies.push(selectedTendency);
-      const updatedTendencies = tendencies;
-      // console.log('else',updatedTendencies)
-      this.setState({ tendencies: updatedTendencies })
-    }
-  }
+    this.setState({
+      tendencies: event,
+    });
+  };
 
   handleUniqTravelData = (tendencies, travelData) => {
     const result = [];
@@ -198,20 +151,21 @@ class Travel extends Component {
         this.setState({ selectedData: arrayedTravel });
         
       })
-  }
+  };
 
   clearSelectedData = () => {
     this.setState({ selectedData: null });
-  }
+  };
 
   handleSelectedPlaceList = (selected) => {
     console.log('se',selected);
     return selected.length > 0 ? (
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={['0']}>
+      // defaultSelectedKeys={['0']}
+      <Menu theme="dark" mode="inline">
         {
           selected.map(([eachRouteUid, eachPlaces], index) => {
             return (
-              <Menu.Item key={index} onClick={() => this.menuClick(eachRouteUid)}>
+              <Menu.Item key={index} onClick={() => this.menuClick(eachRouteUid)} >
                <MenuItem>
                 <RouteName>
                   <Icon type="user" />
@@ -244,38 +198,28 @@ class Travel extends Component {
     return (
       <div>
         {isLoading && travelData && tendencies? (
-          <StyeldLayout>
-            <StyeldSider 
-              style={{ overflow: 'auto', height: '100vh', position: 'realtive', left: 0  }}
-              // breakpoint="lg"
-              // collapsedWidth="0"
-            >
+          <Layout>
+            <StyeldSider> 
+              <StyleLogo clsssName="logo"><HeaderLink to="/">ㅁㅇㄹㅇㅌㄹ</HeaderLink></StyleLogo>
               {this.handleSelectedPlaceList(selectedPlace)}
             </StyeldSider>
-            <StyeldLayout style={{ marginLeft: 0 }}>
-              <StyledHeader style={{ background: 'f0f2f5'}}><HeaderLink to="/">ㅁㅇㄹㅇㅌㄹ</HeaderLink></StyledHeader>
-              <StyledContent style={{ margin: '24px 16px 0' }}>
-              <MapContents  style={{  background: '#fff', minWidth: 360, display: 'flex',}}>
-                <SelectButtons>
-                  <CheckTendency 
-                    tendencies={tendencies}
-                    handleTendency={this.handleTendency}                
-                  />
-                  <StyledButton onClick={this.clearSelectedData}>초기화</StyledButton>
-                </SelectButtons>
-                <Maps>
-                  <Map 
-                    personInfo={personInfo}
-                    isLoading={isLoading}
-                    travelData={selectedData ? selectedData : this.handleUniqTravelData(tendencies, travelData) }
-                    tendency={tendencies}
-                  />
-                </Maps>
-              </MapContents>
-              </StyledContent>
-              <StyledFooter> MRT ©2018 Created </StyledFooter>
-            </StyeldLayout>
-          </StyeldLayout>
+            <div style={{ position: 'relative', width: '100%' }}>
+              <SelectButtons>
+                <CheckTendency 
+                  tendencies={tendencies}
+                  handleTendency={this.handleTendency}                
+                />
+                <StyledButton type="primary" onClick={this.clearSelectedData}>초기화</StyledButton>
+              </SelectButtons>
+              <Map
+                personInfo={personInfo}
+                isLoading={isLoading}
+                travelData={selectedData ? selectedData : this.handleUniqTravelData(tendencies, travelData) }
+                tendency={tendencies}
+              />
+              <WatsonChatButton style={{ position: 'fixed', bottom: '1rem', right: '3rem', zIndex: 100 }} />
+            </div>
+          </Layout>
         ) : <span><LoadingIcon type="loading"/>loading...</span>}
       </div>
     );

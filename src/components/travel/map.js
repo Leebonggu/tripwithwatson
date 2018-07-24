@@ -7,73 +7,75 @@ import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
 import { citiesMarker } from '../../statics/markers/markers'; 
 
 const Wrapper = styled.div`
+  flex: 1;
   width: 100%;
+  height: 100vh;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
 `;
 const MapContainer = styled.div`
-  flex: 7;
+  flex: 95;
   width: 100%;
-  height: 40rem;
+  height: 100vh;
   margin: 0 auto;
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
 `;
 
 const MapContents = styled.div`
+  flex: 95;
   width: 100%;
   display: flex;
+  position: relative;
+  flex-direction: column;
   /* flex: 7; */
 `;
 
 const ResultWrapper = styled.div`
-  flex: 3;
-  width: 100%;
-  margin: 0 1rem;
+  flex: 5;
+  width: 15%;
+  top: 5rem;
+  margin-left: 1rem;
+  position: absolute;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  z-index: 2;
 `;
 
 const Select = styled.div`
-  margin-left: 1rem;
-  position: relative;
   display: flex;
-  flex-direction: row;
+  height: 100%;
+  width: 100%;
   justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  justify-content: flex-start;
   animation-duration: 0s !important;
 `;
 
 const StyledButton = styled(Button)`
-  flex: 1;
-  width: 5rem;
+  flex: 2;
+  width: 4rem;
   height: 2rem;
   border-radius: 10rem;
   display: flex;
-  background-color: ${main};
-  color: ${sub1};
+  justify-content: center;
+  align-items: center;
   font-weight: bold;
   border: none;
-
-  &:hover {
-    background-color: ${sub1};
-    color: ${main};
-    border: 1px solid ${main};
-  };
-
-  &:active {
-    outline: none;
-    background-color: ${sub1};
-    color: ${main};
-    border: 1px solid ${main};
-  }
 `;
 
-const ResultTitle = styled.h2`
-  flex: 9;
+const ResultTitle = styled.div`
+  flex: 8;
+  height: 100%;
   display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
+  font-weight: 800;
+  font-size: 1.2rem;
   color: ${sub4};
 `;
 
@@ -84,12 +86,14 @@ const SelectedList = styled.div`
   width: 100%;
   height: 3rem;
   margin-top: 0.1rem;
-  border: 1px solid ${sub4};
+  background-color: #fff;
+  border-radius: 1rem;
   color: ${sub4};
 `;
 
 const SelectedListTitle = styled.div`
   flex: 9;
+  font-size: 0.7rem;
   display: flex;
   justify-content: center;  
 `;
@@ -97,6 +101,7 @@ const SelectedListTitle = styled.div`
 const SelectedButtons = styled.div`
   flex: 1;
   display: flex;
+  align-items: center;
   flex-direction: column;
 `;
 
@@ -147,8 +152,8 @@ class Map extends Component {
     const { travelData, tendency } = this.props;
     if (travelData) {
       this.map = new window.google.maps.Map(this.mapRef.current, {
-        center: travelData[0].placeInfo,
-        zoom: 4,
+        center: travelData[5].placeInfo,
+        zoom: 5,
       });
       travelData.forEach(element => {
         var marker = new window.google.maps.Marker({
@@ -259,20 +264,20 @@ class Map extends Component {
   };
 
   saveSelctedPlace = (event) => {
-    const name = prompt('입려스!')
+    const name = prompt('입려스!');
     const { selectedPlace } = this.state;
     const uid = auth.currentUser.uid;
     console.log(1,selectedPlace);
     if (selectedPlace.length === 0 || name === '') { 
-      return
+      return;
     }
     database.ref(`users/${uid}/myPlaces`).push({ ...selectedPlace, name: name, createdAt: firebase.database.ServerValue.TIMESTAMP });
-    this.setState({ selectedPlace: [] })
+    this.setState({ selectedPlace: [] });
   };
 
   render() {
     const { selectedPlace } = this.state;
-    console.log('re',selectedPlace)
+    // console.log('re',selectedPlace)
     return (
       <Wrapper>
         {selectedPlace ? (
@@ -281,16 +286,16 @@ class Map extends Component {
             <ResultWrapper>
               <Select>
                 <ResultTitle>Selected Route</ResultTitle>
-                <StyledButton onClick={this.saveSelctedPlace}>Save</StyledButton>
+                <StyledButton type="primary" onClick={this.saveSelctedPlace}>Save</StyledButton>
               </Select>
               {selectedPlace.map((place, index)=> {
                 return (
                 <SelectedList key={index}>
                   <SelectedListTitle>{index + 1}: {place.title}</SelectedListTitle>
                   <SelectedButtons>
-                    <SelectedPlaceUpButton value="1" onClick={() => this.selectedPlaceMoveUp(index)}><Icon type="caret-up" /></SelectedPlaceUpButton>
+                    <SelectedPlaceUpButton value="1" onClick={() => this.selectedPlaceMoveUp(index)}><Icon type="caret-up"/></SelectedPlaceUpButton>
                     <SelectedPlaceDeleteButton onClick={() => this.selectedPlaceDelete(index)}><Icon type="close" /></SelectedPlaceDeleteButton>
-                    <SelectedPlaceDownButton value="2" onClick={() => this.selectedPlaceMoveDown(index)}><Icon type="caret-down" /></SelectedPlaceDownButton>
+                    <SelectedPlaceDownButton value="2" onClick={() => this.selectedPlaceMoveDown(index)}><Icon type="caret-down"/></SelectedPlaceDownButton>
                   </SelectedButtons>
                 </SelectedList>
                 )
@@ -299,7 +304,7 @@ class Map extends Component {
           </MapContents>
         ) : (
           <div>
-            <MapContainer className="map" innerRef={this.mapRef} />
+            <MapContainer innerRef={this.mapRef} />
           </div>
         )}
       </Wrapper>

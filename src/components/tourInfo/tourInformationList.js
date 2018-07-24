@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
+import { tourIcons } from  '../../statics/icons/icons';
 
 const Wrapper = styled.div`
   flex: 5;
@@ -27,6 +28,7 @@ const Title = styled.div`
   flex:2;
   display: flex;
   border: 1px solid black;
+  font-weight: 800;
   color: ${sub4};
   justify-content:center;
   align-items: center;
@@ -34,6 +36,7 @@ const Title = styled.div`
 
 const TourTendencies =  styled.div`
   flex:2;
+  height: 10rem;
   display: flex;
   /* border: 1px solid black; */
   justify-content:center;
@@ -47,9 +50,14 @@ const Guide = styled.div`
   border: 1px solid black;
   overflow-y: scroll;
   text-overflow: ellipsis;
-  color: ${sub2};
+  font-weight: 600;
+  color: ${sub3};
   /* align-items: center; */
 `;
+
+const StyledImg = styled.img`
+  margin: 0 0.5rem;
+`; 
 
 
 const TourInformationList = ({ tourInfo }) => {
@@ -63,8 +71,8 @@ const TourInformationList = ({ tourInfo }) => {
     }
   });
   console.log(4, filteredTendencies);
-
-  console.log(3,tourInfo)
+  console.log(5, tourIcons);
+  console.log(3,tourInfo);
   return (
     <Wrapper>
       <ListContents>
@@ -72,7 +80,9 @@ const TourInformationList = ({ tourInfo }) => {
           {tourInfo.title}
         </Title>
         <TourTendencies>
-          {filteredTendencies.join(',')}
+          {filteredTendencies.map(elemet => {
+            return <StyledImg src={tourIcons[elemet]} alt={elemet} title={elemet} />
+          })}
         </TourTendencies>
         <Guide>
           {tourInfo.가이드}
