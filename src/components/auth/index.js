@@ -13,7 +13,6 @@ class Auth extends Component {
       await firebase.auth().signInWithPopup(googleAuth);
       alert('logIn!');
     } catch (error) {
-      alert("로그인 에러요~");
     }
   };
 

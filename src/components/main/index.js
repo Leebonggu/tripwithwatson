@@ -90,6 +90,7 @@ const SponName = styled.div`
   letter-spacing: -1px;  
   padding: 0.7rem;
   margin: 0.5rem;
+  border: 3px solid ${sub2};
   color: ${sub2};
 `
 
@@ -99,8 +100,17 @@ const RightContents = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  z-index: 2;
   /* background-color: blue; */
 `;
+
+// const StyledVideo = styled.video`
+//   min-width: 100%;
+//   min-height: 100%;
+//   width: 100%;
+//   z-index: 1;
+
+// `;
 
 const RigthAuthContainer = styled.div`
   flex: 5;
@@ -109,12 +119,15 @@ const RigthAuthContainer = styled.div`
   margin-top: 0.3rem;
   justify-content: flex-end;
   align-items: center;
+
+  z-index: 2;
 `;
 
 const AuthButton = styled.div`
   display: flex;
   justify-content: center;
   margin-right: 1.5rem;
+  z-index: 2;
 `;
 
 const StyledButton = styled(Button)`
@@ -126,6 +139,7 @@ const StyledButton = styled(Button)`
   background-color: ${main};
   color: ${sub1};
   border: none;
+  z-index: 2;
 
   &:hover {
     border: 1px solid ${main};
@@ -139,6 +153,8 @@ const RigthMainContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
+
 `;
 
 class Main extends Component {
@@ -152,15 +168,18 @@ class Main extends Component {
             <LeftLogo>ㅁㅇㄹㅇㅌㄹ</LeftLogo>
             <LeftText><AnimatedTyping/></LeftText>
             <LeftSpon>
-              <SponDiscription>with us</SponDiscription>
+              {/* <SponDiscription>Created by</SponDiscription> */}
               <SponList>
-                <SponName>CYS Insight</SponName>
-                <SponName>JEI 재능교육</SponName>
+                <SponName>209</SponName>
+                <SponName>210</SponName>
               </SponList>
             </LeftSpon>
           </LeftContents>
           <RightContents>
             {/* main contents images */}
+            {/* <StyledVideo>
+              <source src={background} type="video/mp4"/>
+            </StyledVideo> */}
             <RigthAuthContainer>
               <AuthButton>{auth}</AuthButton>
             </RigthAuthContainer>

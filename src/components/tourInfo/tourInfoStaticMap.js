@@ -5,14 +5,22 @@ import { Icon } from 'antd';
 import { citiesMarker } from '../../statics/markers/markers'; 
 
 const Wrapper = styled.div`
-  flex: 6;
+  flex: 97;
+  width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
+  align-content: center;
 `;
 
 const StyledStaticGoogleMap = styled(StaticGoogleMap)`
   width: 80%;
   height: 80%;
+  margin-top: 2rem;  
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  
 `;
 
 const TourInfoStaticMap = (props) => {
