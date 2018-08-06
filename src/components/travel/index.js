@@ -84,6 +84,7 @@ class Travel extends Component {
     tendencies : null,
     selectedPlace: [],
     isWatching: false,
+    TravelDataFromWatson: null,
   };
 
   componentDidMount() {
@@ -153,9 +154,31 @@ class Travel extends Component {
       })
   };
 
+    getSelectedPlace = (title) => {
+    // 추가버튼 눌리면 Selected Route에 추가되는 기능
+    const current = this.state.selectedPlace;
+    const result = [];
+    const selectedPlaceInfo = this.props.travelData.filter(element => {
+      return element["도시여행정보"].includes(title.split(' ')[2]);
+    });
+    current.forEach(element => {
+      if (element["도시여행정보"] === selectedPlaceInfo[0]['도시여행정보']) {
+        result.push(element);
+      }
+    });
+    if (result.length === 0) {
+      this.setState({ selectedPlace: [...current, {...selectedPlaceInfo[0], title}] })
+    }
+  };
+
   clearSelectedData = () => {
     this.setState({ selectedData: null });
   };
+
+  getTitleFromWatson = (TraveliInfo) => {
+    console.log(TraveliInfo)
+    this.setState({ TravelDataFromWatson: TraveliInfo})
+  }
 
   handleSelectedPlaceList = (selected) => {
     console.log('se',selected);
@@ -192,9 +215,10 @@ class Travel extends Component {
   };
   
   render() {
-    const { isLoading, travelData, tendencies, selectedPlace, selectedData} = this.state;
+    const { isLoading, travelData, tendencies, selectedPlace, selectedData, TravelDataFromWatson} = this.state;
     const { userData } = this.props;
     const personInfo  = userData ? userData.personInfo : null;
+    console.log(11,tendencies, selectedPlace)
     return (
       <div>
         {isLoading && travelData && tendencies? (
@@ -216,11 +240,18 @@ class Travel extends Component {
                 isLoading={isLoading}
                 travelData={selectedData ? selectedData : this.handleUniqTravelData(tendencies, travelData) }
                 tendency={tendencies}
+                TravelDataFromWatson={TravelDataFromWatson ? TravelDataFromWatson : null}
+                getTitleFromWatson={this.getTitleFromWatson}
               />
-              <WatsonChatButton style={{ position: 'fixed', bottom: '1rem', right: '3rem', zIndex: 100 }} />
+              <WatsonChatButton 
+                style={{ position: 'fixed', bottom: '1rem', right: '3rem', zIndex: 100 }}
+                getTitleFromWatson={this.getTitleFromWatson}
+              />
             </div>
           </Layout>
-        ) : <span><LoadingIcon type="loading"/>loading...</span>}
+        ) : <div>
+              <span><LoadingIcon type="loading"/>loading...</span>
+            </div>}
       </div>
     );
   }

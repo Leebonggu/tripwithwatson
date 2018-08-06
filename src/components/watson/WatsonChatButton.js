@@ -5,10 +5,10 @@ import WatsonChatBoard from './WatsonChatBoard';
 import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
 
 const StyledChatbotButton = styled(Button)`
-  width: 16rem;
+  width: 13rem;
   height: 4rem;
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 900;
   border-radius: 10rem;
   border: none;
   z-index: 2;
@@ -21,15 +21,18 @@ class WatsonChatButton extends Component {
 
   render() {
     const { isWatsonOpen } = this.state;
+    const { getTitleFromWatson } = this.props;
     return (
       <div style={this.props.style}>
         <StyledChatbotButton
           type="primary"
           onClick={() => this.setState({ isWatsonOpen: !isWatsonOpen })}
         >
-          기뫗슨
+          WATSOONI
         </StyledChatbotButton>
-        <WatsonChatBoard style={{ top: 0 }} isWatsonOpen={isWatsonOpen} />
+        <WatsonChatBoard 
+          style={{ top: 0 }} isWatsonOpen={isWatsonOpen}
+          getTitleFromWatson={getTitleFromWatson} />
       </div>
     );
   }

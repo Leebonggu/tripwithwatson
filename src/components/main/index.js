@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom';
 import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
 import mainleft from '../../statics/images/main-left.jpg';
 import AnimatedTyping from './mainTyping';
-import background from '../../statics/images/background.mp4';
+// import { auth } from '../../firebase'; 
+import Survey from '../auth/survey/survey';
+import background from '../../statics/images/background.jpg';
 
 // import Graph from './Graph';
 
@@ -23,6 +25,8 @@ const Contents = styled.div`
   height: 100vh;
   display: flex;
   background-color: white;
+  background: url(${background});
+  background-size: cover;
 `;
 
 const LeftContents = styled.div`
@@ -32,9 +36,7 @@ const LeftContents = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), url(${mainleft});
-  background-position: center;
-  background-repeat: no-repeat;
+  background: linear-gradient(rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0.8));
 `;
 
 const LeftLogo = styled.div`
@@ -95,13 +97,13 @@ const SponName = styled.div`
 `
 
 const RightContents = styled.div`
+position: relative;
   flex: 7.5;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   z-index: 2;
-  /* background-color: blue; */
 `;
 
 // const StyledVideo = styled.video`
@@ -159,7 +161,8 @@ const RigthMainContainer = styled.div`
 
 class Main extends Component {
   render() {
-  const { auth } = this.props;
+  const { auth, userData } = this.props;
+  console.log(11,this.props.history)
 
     return (
       <Wrapper>
@@ -184,9 +187,15 @@ class Main extends Component {
               <AuthButton>{auth}</AuthButton>
             </RigthAuthContainer>
             <RigthMainContainer>
-              <Link to="/travel">
-                <StyledButton type="primary" icon="compass" size="large">Map Page</StyledButton>
-              </Link>
+              {
+                (userData && !Object.keys(userData).length) ? (
+                  <Survey />
+                ):(
+                <Link to="/travel">
+                  <StyledButton type="primary" icon="compass" size="large">Map Page</StyledButton>
+                </Link>
+                )
+              }
             </RigthMainContainer>
           </RightContents>
         </Contents>

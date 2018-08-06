@@ -28,17 +28,13 @@ class Auth extends Component {
   render() {
     const { userData } = this.props;
     // console.log((auth.currentUser && !userData))
-    // console.log(userData);
+    console.log(3123123,userData);
     return (
       <div>
         {auth.currentUser ? (
           <SignOut click={this.signOut} />
         ) : (
           <SignIn click={this.signIn} />
-        )}
-        {(auth.currentUser && !userData) && (
-          <Survey /> 
-          // <Redirect to="/survey"/>
         )}
       </div>
     )
