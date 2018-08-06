@@ -179,7 +179,7 @@ class Map extends Component {
           position: element.placeInfo,
           map: this.map,
           icon: citiesMarker[element['나라']],
-          title: `${element['나라']} ${element['도시']} ${element['도시여행정보']}`
+          title: `${element['나라']} ${element['도시']} ${element['도시여행정보']}`,
         });
         this.attachMessage(marker, marker.title);
         this.markers.push(marker);
@@ -192,7 +192,7 @@ class Map extends Component {
       content: `
         <div>
           <span>${message}</span>
-          <button onclick="mapComp.getSelectedPlace('${marker.title}')">추가</button>
+          <button id="${message}" onclick="mapComp.getSelectedPlace('${marker.title}')">추가</button>
         </div>
       `,
     });
@@ -210,19 +210,35 @@ class Map extends Component {
 
   getSelectedPlace = (title) => {
     // 추가버튼 눌리면 Selected Route에 추가되는 기능
+    const { TravelDataFromWatson } = this.props;
     const current = this.state.selectedPlace;
     const result = [];
-    const selectedPlaceInfo = this.props.travelData.filter(element => {
-      return element["도시여행정보"].includes(title.split(' ')[2]);
-    });
     
-    current.forEach(element => {
-      if (element["도시여행정보"] === selectedPlaceInfo[0]['도시여행정보']) {
-        result.push(element);
+    if (TravelDataFromWatson) {
+      const selectedPlaceInfo = this.props.travelData.filter(element => {
+        return element["도시여행정보"].includes(TravelDataFromWatson);
+      });
+      current.forEach(element => {
+        if (element["도시여행정보"] === selectedPlaceInfo[0]['도시여행정보']) {
+          result.push(element);
+        }
+        this.getSelectedPlace(TravelDataFromWatson)
+      });
+      if (result.length === 0) {
+        this.setState({ selectedPlace: [...current, {...selectedPlaceInfo[0], title}] })
       }
-    });
-    if (result.length === 0) {
-      this.setState({ selectedPlace: [...current, {...selectedPlaceInfo[0], title}] })
+    } else {
+      const selectedPlaceInfo = this.props.travelData.filter(element => {
+        return element["도시여행정보"].includes(title.split(' ')[2]);
+      });
+      current.forEach(element => {
+        if (element["도시여행정보"] === selectedPlaceInfo[0]['도시여행정보']) {
+          result.push(element);
+        }
+      });
+      if (result.length === 0) {
+        this.setState({ selectedPlace: [...current, {...selectedPlaceInfo[0], title}] })
+      }
     }
   };
 
@@ -249,6 +265,7 @@ class Map extends Component {
       console.log('맨 아래 데이터는 더 이상 내려갈 곳이 없지요~');
       return;
     }
+
     temp = current[index + 1];
     current[index + 1] = current[index];
     current[index] = temp;
@@ -265,6 +282,9 @@ class Map extends Component {
 
   saveSelctedPlace = (event) => {
     const name = prompt('입려스!');
+    if (!name) {
+      return;
+    }
     const { selectedPlace } = this.state;
     const uid = auth.currentUser.uid;
     console.log(1,selectedPlace);
@@ -277,7 +297,8 @@ class Map extends Component {
 
   render() {
     const { selectedPlace } = this.state;
-    // console.log('re',selectedPlace)
+    console.log(this.props.TravelDataFromWatson);
+    console.log('re',this.props.travelData)
     return (
       <Wrapper>
         {selectedPlace ? (
@@ -286,7 +307,7 @@ class Map extends Component {
             <ResultWrapper>
               <Select>
                 <ResultTitle>Selected Route</ResultTitle>
-                <StyledButton type="primary" onClick={this.saveSelctedPlace}>Save</StyledButton>
+                <StyledButton id="save" type="primary" onClick={this.saveSelctedPlace}>Save</StyledButton>
               </Select>
               {selectedPlace.map((place, index)=> {
                 return (

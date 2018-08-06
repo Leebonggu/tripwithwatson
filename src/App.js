@@ -28,7 +28,7 @@ class App extends Component {
   getDataFromDatabase = async (uid) => { 
     try {
       const snapshot = await database.ref(`/users/${uid}`).once('value'); 
-      this.handleUserData(snapshot.val());
+      this.handleUserData(snapshot.val() || {});
     } catch (error) {
       alert('데이터불러오기 에러욤~');
     }
@@ -51,7 +51,7 @@ class App extends Component {
       <HashRouter>
         <div>
           <Switch>
-            <Route exact path="/" component={ () => <Main auth={<Auth userData={userData} />}/> } />
+            <Route exact path="/" component={ () => <Main userData={userData} auth={<Auth userData={userData} />}/> } />
             <Route exact path="/travel" component={() => <Travel userData={userData} />} />
             <Route exact path="/survey" component={() => <Survey />} />
             <Route exact path="/tourinformation/:routeUid" component={() => <TourInfomation userData={userData} uid={uid} />} />

@@ -9,16 +9,26 @@ const Option = Select.Option;
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 
-const SurveyHeader = styled.h1`
-  text-align: center;
+const StyeldContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`
+
+const SurveyHeader = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   margin: 3rem 0;
   font-size: 2rem;
 `;
 
 const StyeldForm = styled(Form)`
   display: flex;
+  width: 85%;
   flex-direction: column; 
-  width: 100%;
 `;
 
 const StyeldFormItem = styled(FormItem)`
@@ -78,7 +88,7 @@ class Survey extends Component {
     };
 
     return(
-      <div>
+      <StyeldContainer>
         <SurveyHeader>당신의 여행성향을 알려주세요</SurveyHeader>
         <StyeldForm onSubmit={this.handleSubmit}>
           <StyeldFormItem
@@ -152,7 +162,7 @@ class Survey extends Component {
             <StyledButton type="primary" htmlType="submit" size="large">등록</StyledButton>
           </StyeldFormItem>
         </StyeldForm>
-      </div>
+      </StyeldContainer>
     );
   }
 }
