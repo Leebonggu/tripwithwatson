@@ -4,7 +4,7 @@ import { Button } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
-import mainleft from '../../statics/images/main-left.jpg';
+// import mainleft from '../../statics/images/main-left.jpg';
 import AnimatedTyping from './mainTyping';
 // import { auth } from '../../firebase'; 
 import Survey from '../auth/survey/survey';

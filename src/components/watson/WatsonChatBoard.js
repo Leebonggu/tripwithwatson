@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { Form, Button, Input } from 'antd';
 import axios from 'axios';
-import watson from  '../../statics/images/watson.jpg';
+// import watson from  '../../statics/images/watson.jpg';
 import { main, sub1, sub2, sub3, sub4 } from  '../../statics/colors';
 
 
@@ -168,7 +168,7 @@ class WatsonChatBoard extends Component {
     return (
       <ChatWrapper style={this.props.style} isWatsonOpen={this.props.isWatsonOpen}>
         <Contetns>
-          <ChatbotNameContainer><StyledImg src={watson} />엠마 왓순희</ChatbotNameContainer>
+          <ChatbotNameContainer>엠마 왓순희</ChatbotNameContainer>
           <ChatTextContainer innerRef={this.messagesContainer}>
             {this.state.messages.map(({ sender, message }, i) => {
               if (Array.isArray(message)) {
